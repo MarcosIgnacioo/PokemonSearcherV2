@@ -10,9 +10,9 @@ public class Pokemon {
     private final int baseExperience;
     private final int order;
     private final boolean isDefault;
-    private final List<String> tipos;
+    private final List<TypePokemon> types;
 
-    public Pokemon(String name, int id, int height, int weight, int baseExperience, int order, boolean isDefault, List<String> tipos) {
+    public Pokemon(String name, int id, int height, int weight, int baseExperience, int order, boolean isDefault, List<TypePokemon> types) {
         this.name = name;
         this.id = id;
         this.height = height;
@@ -20,7 +20,7 @@ public class Pokemon {
         this.baseExperience = baseExperience;
         this.order = order;
         this.isDefault = isDefault;
-        this.tipos = tipos;
+        this.types = types;
     }
 
 
@@ -55,17 +55,18 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        StringBuilder tmp = new StringBuilder();
-        for (String pokemonType:
-             tipos) {
-            tmp.append(pokemonType);
-            tmp.append(" ");
+        StringBuilder pkmnTypes = new StringBuilder();
+        for (TypePokemon t:
+             types) {
+            pkmnTypes.append("[");
+            pkmnTypes.append(t.getName());
+            pkmnTypes.append("] ");
         }
         return  "Pokemon: "+ name + "\n"+
                 "id: "+ id + "\n"+
                 "height: "+ height + "\n"+
                 "weight: "+ weight + "\n"+
                 "base experience: "+ baseExperience + "\n" +
-                "Tipos: "+ tmp +  "\n";
+                "Types: "+ pkmnTypes +  "\n";
     }
 }
