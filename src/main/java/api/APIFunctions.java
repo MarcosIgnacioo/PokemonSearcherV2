@@ -3,6 +3,7 @@ import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import okhttp3.*;
 import pokemon.classes.Pokemon;
+import pokemon.classes.Stats;
 import pokemon.classes.TypePokemon;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class APIFunctions {
 
 
         String json = response.body().string();
-        if (json.equals("Not found")) return Optional.of(new Pokemon("Not found", 0,0,0,0,0,false, List.of()));
+        if (json.equals("Not found")) return Optional.of(new Pokemon("Not found", 0,0,0,0,0,false, List.of(), new Stats()));
         else{
             JSONObject jsonObject = new JSONObject(json);
 
@@ -37,12 +38,17 @@ public class APIFunctions {
             int pokemonBaseExp = jsonObject.getInt("base_experience");
             int pokemonOrder = jsonObject.getInt("order");
             boolean pokemonIsDefault = jsonObject.getBoolean("is_default");
+            System.out.println(jsonObject.getJSONArray("stats"));
 
             JSONArray types = jsonObject.getJSONArray("types");
+            JSONArray stats = jsonObject.getJSONArray("stats");
             List<TypePokemon> typesList = getTypes.apply(types);
-            Pokemon pkmn = new Pokemon(pokemonName,pokemonId,pokemonHeight,pokemonWeight,pokemonBaseExp,pokemonOrder,pokemonIsDefault,typesList);
+            Stats statsPkmn = getStats.apply(stats);
+
+            Pokemon pkmn = new Pokemon(pokemonName,pokemonId,pokemonHeight,pokemonWeight,pokemonBaseExp,pokemonOrder,pokemonIsDefault,typesList,statsPkmn);
 
             return Optional.of(pkmn);
+            //return Optional.empty();
         }
     }
     static Function<JSONArray, List<TypePokemon>> getTypes = jsonArray -> {
@@ -53,6 +59,16 @@ public class APIFunctions {
             typesList.add(typeName);
         }
         return typesList;
+    };
+
+
+    static Function<JSONArray, Stats> getStats = jsonArray -> {
+        List<Integer> statsNumbers = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            int statNumber = jsonArray.getJSONObject(i).getInt("base_stat");
+            statsNumbers.add(statNumber);
+        }
+        return new Stats(statsNumbers);
     };
 
     /* funcion para buscar pokemon
