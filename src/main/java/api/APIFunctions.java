@@ -3,6 +3,8 @@ import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import okhttp3.*;
 import pokemon.classes.Pokemon;
+import pokemon.classes.TypePokemon;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +39,17 @@ public class APIFunctions {
             boolean pokemonIsDefault = jsonObject.getBoolean("is_default");
 
             JSONArray types = jsonObject.getJSONArray("types");
-            List<String> typesList = getTypes.apply(types);
+            List<TypePokemon> typesList = getTypes.apply(types);
             Pokemon pkmn = new Pokemon(pokemonName,pokemonId,pokemonHeight,pokemonWeight,pokemonBaseExp,pokemonOrder,pokemonIsDefault,typesList);
 
             return Optional.of(pkmn);
         }
     }
-    static Function<JSONArray, List<String>> getTypes = jsonArray -> {
-        List<String> typesList = new ArrayList<>();
+    static Function<JSONArray, List<TypePokemon>> getTypes = jsonArray -> {
+        List<TypePokemon> typesList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject typeObject = jsonArray.getJSONObject(i).getJSONObject("type");
-            String typeName = typeObject.getString("name");
+            TypePokemon typeName = new TypePokemon(i+1, typeObject.getString("name"));
             typesList.add(typeName);
         }
         return typesList;
