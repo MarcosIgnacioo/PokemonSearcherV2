@@ -3,14 +3,14 @@ package pokemon.classes;
 import java.util.List;
 
 public class Pokemon {
-    private String name;
-    private int id;
-    private int height;
-    private int weight;
-    private int baseExperience;
-    private int order;
-    private boolean isDefault;
-    private List<String> tipos;
+    private final String name;
+    private final int id;
+    private final int height;
+    private final int weight;
+    private final int baseExperience;
+    private final int order;
+    private final boolean isDefault;
+    private final List<String> tipos;
 
     public Pokemon(String name, int id, int height, int weight, int baseExperience, int order, boolean isDefault, List<String> tipos) {
         this.name = name;
@@ -21,9 +21,6 @@ public class Pokemon {
         this.order = order;
         this.isDefault = isDefault;
         this.tipos = tipos;
-    }
-
-    public Pokemon() {
     }
 
 
